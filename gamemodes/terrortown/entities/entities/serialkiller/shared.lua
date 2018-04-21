@@ -20,25 +20,27 @@ AddCustomRole("SERIALKILLER", { -- first param is access for ROLES array => ROLE
 	defaultEquipment = SPECIAL_EQUIPMENT, -- here you can set up your own default equipment 
     surviveBonus = 1, -- bonus multiplier for every survive while another player was killed
     scoreKillsMultiplier = 5, -- multiplier for kill of player of another team
-    scoreTeamKillsMultiplier = -16, -- multiplier for teamkill
-    random = 20 -- randomness of getting this role selected in a round
+    scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
 }, {
     pct = 0.13, -- necessary: percentage of getting this role selected (per player)
     maximum = 1, -- maximum amount of roles in a round
     minPlayers = 8, -- minimum amount of players until this role is able to get selected
     credits = 1, -- the starting credits of a specific role
-    togglable = true -- option to toggle a role for a client if possible (F1 menu)
+    togglable = true, -- option to toggle a role for a client if possible (F1 menu)
+    random = 20 -- randomness of getting this role selected in a round
 })
 
 -- if sync of roles has finished
 hook.Add("TTT2_FinishedSync", "SerialInitT", function(first)
-    
-    if first then
+    if SERVER and first and ROLES.JESTER then
         -- add a easy role filtering to receive all jesters
         -- but just do it, when the role was created, then update it with recommended function
+        -- theoretically this function is not necessary to call, but maybe there are some modifications
+        -- of other addons. So it's better to use this function 
+        -- because it calls hooks and is doing some networking
         UpdateCustomRole("SERIALKILLER", {
             networkRoles = {
-                ROLES["JESTER"]
+                ROLES.JESTER
             }
         })
     end
@@ -54,6 +56,7 @@ hook.Add("TTT2_FinishedSync", "SerialInitT", function(first)
 		LANG.AddToLanguage("English", "body_found_" .. ROLES.SERIALKILLER.abbr, "This was a Serial Killer...")
 		LANG.AddToLanguage("English", "search_role_" .. ROLES.SERIALKILLER.abbr, "This person was a Serial Killer!")
         LANG.AddToLanguage("English", "ev_win_" .. ROLES.SERIALKILLER.abbr, "The deadly Serial Killer won the round!")
+		LANG.AddToLanguage("English", "target_" .. ROLES.SERIALKILLER.name, "Serial Killer")
 	    
 	    -- optional for toggling whether player can avoid the role
 		LANG.AddToLanguage("English", "set_avoid_" .. ROLES.SERIALKILLER.abbr, "Avoid being selected as Serial Killer!")
@@ -70,6 +73,7 @@ hook.Add("TTT2_FinishedSync", "SerialInitT", function(first)
 		LANG.AddToLanguage("Deutsch", "body_found_" .. ROLES.SERIALKILLER.abbr, "Er war ein Serienkiller...")
 		LANG.AddToLanguage("Deutsch", "search_role_" .. ROLES.SERIALKILLER.abbr, "Diese Person war ein Serienkiller!")
         LANG.AddToLanguage("Deutsch", "ev_win_" .. ROLES.SERIALKILLER.abbr, "Der tötliche Serienkiller hat die Runde gewonnen!")
+		LANG.AddToLanguage("Deutsch", "target_" .. ROLES.SERIALKILLER.name, "Serienkiller")
 	    
 		LANG.AddToLanguage("Deutsch", "set_avoid_" .. ROLES.SERIALKILLER.abbr, "Vermeide als Serienkiller ausgewählt zu werden!")
 		LANG.AddToLanguage("Deutsch", "set_avoid_" .. ROLES.SERIALKILLER.abbr .. "_tip", 
