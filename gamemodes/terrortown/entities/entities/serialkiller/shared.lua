@@ -31,7 +31,7 @@ AddCustomRole("SERIALKILLER", { -- first param is access for ROLES array => ROLE
 })
 
 -- if sync of roles has finished
-hook.Add("TTT2_FinishedSync", "SerialInitT", function(first)
+hook.Add("TTT2_FinishedSync", "SerialInitT", function(ply, first)
     if SERVER and first and ROLES.JESTER then
         -- add a easy role filtering to receive all jesters
         -- but just do it, when the role was created, then update it with recommended function
