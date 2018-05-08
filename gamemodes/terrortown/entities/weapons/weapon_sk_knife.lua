@@ -209,13 +209,16 @@ function SWEP:SecondaryAttack()
    if CLIENT then return end
    
    local Bom = ents.Create("tot_smokenade")
-   Bom.HmcdSpawned = self.HmcdSpawned
-   Bom:SetPos(self.Owner:GetShootPos() + self.Owner:GetAimVector() * 20)
    
-   Bom:Spawn()
-   Bom:Activate()
-   
-   Bom:GetPhysicsObject():SetVelocity(self.Owner:GetVelocity() + self.Owner:GetAimVector() * 300)
+   if Bom then
+       Bom.HmcdSpawned = self.HmcdSpawned
+       Bom:SetPos(self.Owner:GetShootPos() + self.Owner:GetAimVector() * 20)
+       
+       Bom:Spawn()
+       Bom:Activate()
+       
+       Bom:GetPhysicsObject():SetVelocity(self.Owner:GetVelocity() + self.Owner:GetAimVector() * 300)
+   end
    
    sound.Play("snd_jack_hmcd_match.wav", self:GetPos(), 65, math.random(90, 110))
    sound.Play("weapons/slam/throw.wav", self:GetPos(), 65, math.random(90, 110))
