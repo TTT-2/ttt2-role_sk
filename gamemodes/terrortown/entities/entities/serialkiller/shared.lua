@@ -164,6 +164,8 @@ end
 
 if CLIENT then
 	hook.Add("PreDrawHalos", "AddSerialkillerHalos", function()
+        if not ROLES.SERIALKILLER then return end
+    
 		local client = LocalPlayer()
 
 	    if client:GetRole() == ROLES.SERIALKILLER.index then
