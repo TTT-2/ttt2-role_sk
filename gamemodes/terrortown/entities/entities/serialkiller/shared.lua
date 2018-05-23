@@ -57,13 +57,13 @@ hook.Add("TTT2_FinishedSync", "SerialInitT", function(ply, first)
 		LANG.AddToLanguage("English", "search_role_" .. ROLES.SERIALKILLER.abbr, "This person was a Serial Killer!")
         LANG.AddToLanguage("English", "ev_win_" .. ROLES.SERIALKILLER.abbr, "The deadly Serial Killer won the round!")
 		LANG.AddToLanguage("English", "target_" .. ROLES.SERIALKILLER.name, "Serial Killer")
+        LANG.AddToLanguage("English", "ttt2_desc_" .. ROLES.SERIALKILLER.name, [[The Serialkiller needs to kill every player and must be the last survivor to win the game. 
+He can access his own ([C]) shop and is able to see every player through the walls (as well as he is able to select the Jester from the other players).]])
 	    
 	    -- optional for toggling whether player can avoid the role
 		LANG.AddToLanguage("English", "set_avoid_" .. ROLES.SERIALKILLER.abbr, "Avoid being selected as Serial Killer!")
 		LANG.AddToLanguage("English", "set_avoid_" .. ROLES.SERIALKILLER.abbr .. "_tip", 
 	        [[Enable this to ask the server not to select you as Serial Killer if possible. Does not mean you are Traitor more often.]])
-        LANG.AddToLanguage("English", "ttt2_desc_" .. ROLES.SERIALKILLER.name, [[The Serialkiller needs to kill every player and must be the last survivor to win the game. 
-He can access his own ([C]) shop and is able to see every player through the walls (as well as he is able to select the Jester from the other players).]])
 	    
 	    ---------------------------------
 
