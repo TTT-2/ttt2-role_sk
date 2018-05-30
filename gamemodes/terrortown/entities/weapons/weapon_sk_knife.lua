@@ -3,20 +3,20 @@ AddCSLuaFile()
 SWEP.HoldType               = "knife"
 
 if CLIENT then
-   SWEP.PrintName           = "knife_name"
-   SWEP.Slot                = 0
+	SWEP.PrintName          = "knife_name"
+	SWEP.Slot               = 0
 
-   SWEP.ViewModelFlip       = false
-   SWEP.ViewModelFOV        = 54
-   SWEP.DrawCrosshair       = false
+	SWEP.ViewModelFlip      = false
+	SWEP.ViewModelFOV       = 54
+	SWEP.DrawCrosshair      = false
 
-   SWEP.EquipMenuData = {
-      type = "item_weapon",
-      desc = "knife_desc"
-   }
+	SWEP.EquipMenuData = {
+		type = "item_weapon",
+		desc = "knife_desc"
+	}
 
-   SWEP.Icon                = "vgui/ttt/icon_knife"
-   SWEP.IconLetter          = "j"
+	SWEP.Icon               = "vgui/ttt/icon_knife"
+	SWEP.IconLetter         = "j"
 end
 
 SWEP.Base                   = "weapon_tttbase"
@@ -38,8 +38,8 @@ SWEP.Secondary.Automatic    = false
 SWEP.Secondary.Ammo         = "none"
 SWEP.Secondary.Delay        = 12
 
-SWEP.Kind                    = WEAPON_MELEE
-SWEP.WeaponID                = AMMO_CROWBAR
+SWEP.Kind                   = WEAPON_MELEE
+SWEP.WeaponID               = AMMO_CROWBAR
   
 SWEP.IsSilent               = true
 
@@ -80,7 +80,9 @@ function SWEP:PrimaryAttack()
 
       if hitEnt:IsPlayer() or hitEnt:GetClass() == "prop_ragdoll" then
 	     self:GetOwner():SetAnimation(PLAYER_ATTACK1)
-	     self.Weapon:SendWeaponAnim(ACT_VM_MISSCENTER)
+	     
+		 self.Weapon:SendWeaponAnim(ACT_VM_MISSCENTER)
+		 
          util.Effect("BloodImpact", edata)
       end
    else
@@ -133,14 +135,14 @@ function SWEP:StabKill(tr, spos, sdest)
    -- hope our effect_fn trace has more luck
 
    -- first a straight up line trace to see if we aimed nicely
-   local retr = util.TraceLine({start=spos, endpos=sdest, filter=self:GetOwner(), mask=MASK_SHOT_HULL})
+   local retr = util.TraceLine({start = spos, endpos = sdest, filter = self:GetOwner(), mask = MASK_SHOT_HULL})
 
    -- if that fails, just trace to worldcenter so we have SOMETHING
    if retr.Entity ~= target then
       local center = target:LocalToWorld(target:OBBCenter())
+	  
       retr = util.TraceLine({start = spos, endpos = center, filter = self:GetOwner(), mask = MASK_SHOT_HULL})
    end
-
 
    -- create knife effect creation fn
    local bone = retr.PhysicsBone
@@ -172,11 +174,13 @@ function SWEP:StabKill(tr, spos, sdest)
       knife:SetPos(pos)
       knife:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
       knife:SetAngles(ang)
+	  
       knife.CanPickup = false
 
       knife:Spawn()
 
       local phys = knife:GetPhysicsObject()
+	  
       if IsValid(phys) then
          phys:EnableCollisions(false)
       end
@@ -195,7 +199,6 @@ function SWEP:StabKill(tr, spos, sdest)
    -- target appears to die right there, so we could theoretically get to
    -- the ragdoll in here...
 end
-
 
 function SWEP:SecondaryAttack()
    self.Weapon:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
