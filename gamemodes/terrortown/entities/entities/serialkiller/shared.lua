@@ -27,7 +27,8 @@ AddCustomRole("SERIALKILLER", { -- first param is access for ROLES array => ROLE
     minPlayers = 8, -- minimum amount of players until this role is able to get selected
     credits = 1, -- the starting credits of a specific role
     togglable = true, -- option to toggle a role for a client if possible (F1 menu)
-    random = 20 -- randomness of getting this role selected in a round
+    random = 20, -- randomness of getting this role selected in a round
+	shopFallback = SHOP_FALLBACK_TRAITOR
 })
 
 -- if sync of roles has finished
