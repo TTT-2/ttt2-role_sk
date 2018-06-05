@@ -1,35 +1,37 @@
-AddCSLuaFile()
-
 if SERVER then
-   resource.AddFile("materials/vgui/ttt/icon_sk.vmt")
-   resource.AddFile("materials/vgui/ttt/sprite_sk.vmt")
-   resource.AddFile("materials/smokey.png")
+	AddCSLuaFile()
+
+	resource.AddFile("materials/vgui/ttt/icon_sk.vmt")
+	resource.AddFile("materials/vgui/ttt/sprite_sk.vmt")
+	resource.AddFile("materials/smokey.png")
 end
 
--- important to add roles with this function,
--- because it does more than just access the array ! e.g. updating other arrays
-AddCustomRole("SERIALKILLER", { -- first param is access for ROLES array => ROLES.SERIALKILLER or ROLES["SERIALKILLER"]
-	color = Color(85, 26, 139, 255), -- ...
-	dkcolor = Color(65, 20, 107, 255), -- ...
-	bgcolor = Color(0, 50, 0, 200), -- ...
-	name = "serialkiller", -- just a unique name for the script to determine
-	printName = "Serialkiller", -- The text that is printed to the player, e.g. in role alert
-	abbr = "sk", -- abbreviation
-	shop = true, -- can the role access the [C] shop ?
-	team = "serialkillers", -- the team name: roles with same team name are working together
-	defaultEquipment = SPECIAL_EQUIPMENT, -- here you can set up your own default equipment 
-    surviveBonus = 1, -- bonus multiplier for every survive while another player was killed
-    scoreKillsMultiplier = 5, -- multiplier for kill of player of another team
-    scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
-}, {
-    pct = 0.13, -- necessary: percentage of getting this role selected (per player)
-    maximum = 1, -- maximum amount of roles in a round
-    minPlayers = 8, -- minimum amount of players until this role is able to get selected
-    credits = 1, -- the starting credits of a specific role
-    togglable = true, -- option to toggle a role for a client if possible (F1 menu)
-    random = 20, -- randomness of getting this role selected in a round
-	shopFallback = SHOP_FALLBACK_TRAITOR
-})
+hook.Add("Initialize", "TTT2InitCRoleSk", function()
+	-- important to add roles with this function,
+	-- because it does more than just access the array ! e.g. updating other arrays
+	AddCustomRole("SERIALKILLER", { -- first param is access for ROLES array => ROLES.SERIALKILLER or ROLES["SERIALKILLER"]
+		color = Color(85, 26, 139, 255), -- ...
+		dkcolor = Color(65, 20, 107, 255), -- ...
+		bgcolor = Color(0, 50, 0, 200), -- ...
+		name = "serialkiller", -- just a unique name for the script to determine
+		printName = "Serialkiller", -- The text that is printed to the player, e.g. in role alert
+		abbr = "sk", -- abbreviation
+		shop = true, -- can the role access the [C] shop ?
+		team = "serialkillers", -- the team name: roles with same team name are working together
+		defaultEquipment = SPECIAL_EQUIPMENT, -- here you can set up your own default equipment 
+		surviveBonus = 1, -- bonus multiplier for every survive while another player was killed
+		scoreKillsMultiplier = 5, -- multiplier for kill of player of another team
+		scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
+	}, {
+		pct = 0.13, -- necessary: percentage of getting this role selected (per player)
+		maximum = 1, -- maximum amount of roles in a round
+		minPlayers = 8, -- minimum amount of players until this role is able to get selected
+		credits = 1, -- the starting credits of a specific role
+		togglable = true, -- option to toggle a role for a client if possible (F1 menu)
+		random = 20, -- randomness of getting this role selected in a round
+		shopFallback = SHOP_FALLBACK_TRAITOR
+	})
+end)
 
 -- if sync of roles has finished
 hook.Add("TTT2_FinishedSync", "SerialInitT", function(ply, first)
@@ -133,7 +135,7 @@ if SERVER then
 	   timer.Create("sksmoke", 0.1, 0, function()   
 	      timer.Remove("thatsksmokecheckers")
 
-	      for _, v in pairs(player.GetAll()) do
+	      for _, v in ipairs(player.GetAll()) do
 	         if not IsValid(v) then return end
 
 	         if v:GetRole() == ROLES.SERIALKILLER.index and v:Alive() then
@@ -177,9 +179,8 @@ if CLIENT then
 	        local staff = {}
 	        local jesty = {}
 
-	        for _, v in pairs(player.GetAll()) do
-	            if v:GetRole() ~= ROLES.SERIALKILLER.index then
-                    
+	        for _, v in ipairs(player.GetAll()) do
+	            if v:IsActive() and v:GetRole() ~= ROLES.SERIALKILLER.index then
                     local b = false
                     
                     -- check whether role exists
