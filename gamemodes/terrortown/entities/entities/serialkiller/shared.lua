@@ -14,9 +14,7 @@ hook.Add("Initialize", "TTT2InitCRoleSk", function()
 		dkcolor = Color(65, 20, 107, 255), -- ...
 		bgcolor = Color(0, 50, 0, 200), -- ...
 		name = "serialkiller", -- just a unique name for the script to determine
-		printName = "Serialkiller", -- The text that is printed to the player, e.g. in role alert
 		abbr = "sk", -- abbreviation
-		shop = true, -- can the role access the [C] shop ?
 		team = "serialkillers", -- the team name: roles with same team name are working together
 		defaultEquipment = SPECIAL_EQUIPMENT, -- here you can set up your own default equipment 
 		surviveBonus = 1, -- bonus multiplier for every survive while another player was killed
