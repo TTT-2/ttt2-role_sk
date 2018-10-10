@@ -4,37 +4,37 @@ ENT.Model = Model("models/weapons/w_crowbar.mdl")
 ENT.BeeCount = 6
 
 function ENT:Infect(plyr)
-    if plyr:Alive() then
-        local pos = self.Entity:GetPos()
-        
-        for i = 1, self.BeeCount do
-            local spos = pos + Vector(math.random(-75, 75), math.random(-75, 75), math.random(0,50))
-            local contents = util.PointContents(spos)
-            local _i = 0
-            
-            while i < 10 and (contents == CONTENTS_SOLID or contents == CONTENTS_PLAYERCLIP) do 
-                _i = 1 + i
-                spos = pos + Vector(math.random(-125, 125), math.random(-125, 125), math.random(-50, 50)) 
-                contents = util.PointContents( spos )
-            end
+	if plyr:Alive() then
+		local pos = self:GetPos()
 
-            local headBee = SpawnNPC(self:GetThrower(), spos, BeeNPCClass)
+		for i = 1, self.BeeCount do
+			local spos = pos + Vector(math.random(-75, 75), math.random(-75, 75), math.random(0, 50))
+			local contents = util.PointContents(spos)
+			local _i = 0
 
-            headBee:SetNPCState(2)
+			while i < 10 and (contents == CONTENTS_SOLID or contents == CONTENTS_PLAYERCLIP) do
+				_i = 1 + i
+				spos = pos + Vector(math.random(-125, 125), math.random(-125, 125), math.random(-50, 50))
+				contents = util.PointContents(spos)
+			end
 
-            local Bee = ents.Create("prop_dynamic")
-            Bee:SetModel("models/lucian/props/stupid_bee.mdl")
-            Bee:SetPos(spos)
-            Bee:SetAngles(Angle(0, 0, 0))
-            Bee:SetParent(headBee)
+			local headBee = SpawnNPC(self:GetThrower(), spos, BeeNPCClass)
 
-            --headBee:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+			headBee:SetNPCState(2)
 
-            --headBee:SetName(self:GetThrower():GetName())
-            headBee:SetNoDraw(true)
-            headBee:SetHealth(1000)
-        end
+			local Bee = ents.Create("prop_dynamic")
+			Bee:SetModel("models/lucian/props/stupid_bee.mdl")
+			Bee:SetPos(spos)
+			Bee:SetAngles(Angle(0, 0, 0))
+			Bee:SetParent(headBee)
 
-        self:Remove()
-    end
+			--headBee:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+
+			--headBee:SetName(self:GetThrower():GetName())
+			headBee:SetNoDraw(true)
+			headBee:SetHealth(1000)
+		end
+
+		self:Remove()
+	end
 end

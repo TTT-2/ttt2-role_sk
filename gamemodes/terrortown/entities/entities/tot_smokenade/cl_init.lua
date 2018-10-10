@@ -7,11 +7,11 @@ function ENT:Initialize()
 end
 
 function ENT:Draw()
-    self.BaseClass.Draw(self)
+	self.BaseClass.Draw(self)
 end
 
 function ENT:DrawTranslucent()
-    self.BaseClass.DrawTranslucent(self)
+	self.BaseClass.DrawTranslucent(self)
 end
 
 function ENT:Think()
