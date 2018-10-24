@@ -9,7 +9,7 @@ end
 -- creates global var "TEAM_SERIALKILLER" and other required things
 -- TEAM_[name], data: e.g. icon, color,...
 InitCustomTeam("SERIALKILLER", {
-		icon = "vgui/ttt/icon_sk",
+		icon = "vgui/ttt/sprite_sk",
 		color = Color(85, 26, 139, 255)
 })
 
