@@ -17,9 +17,8 @@ InitCustomTeam("SERIALKILLER", {
 -- because it does more than just access the array ! e.g. updating other arrays
 InitCustomRole("SERIALKILLER", { -- first param is access for ROLES array => SERIALKILLER or ROLES["SERIALKILLER"]
 		color = Color(85, 26, 139, 255), -- ...
-		dkcolor = Color(65, 20, 107, 255), -- ...
-		bgcolor = Color(0, 50, 0, 200), -- ...
-		name = "serialkiller", -- just a unique name for the script to determine
+		dkcolor = Color(47, 5, 86, 255), -- ...
+		bgcolor = Color(206, 197, 26, 255), -- ...
 		abbr = "sk", -- abbreviation
 		defaultTeam = TEAM_SERIALKILLER, -- the team name: roles with same team name are working together
 		defaultEquipment = SPECIAL_EQUIPMENT, -- here you can set up your own default equipment
@@ -52,6 +51,7 @@ hook.Add("TTT2FinishedLoading", "SerialInitT", function()
 		-- setup here is not necessary but if you want to access the role data, you need to start here
 		-- setup basic translation !
 		LANG.AddToLanguage("English", SERIALKILLER.name, "Serial Killer")
+		LANG.AddToLanguage("English", TEAM_SERIALKILLER, "TEAM Serial Killers")
 		LANG.AddToLanguage("English", "hilite_win_" .. TEAM_SERIALKILLER, "THE SK WON") -- name of base role of a team -> maybe access with GetTeamRoles(SERIALKILLER.team)[1].name
 		LANG.AddToLanguage("English", "win_" .. TEAM_SERIALKILLER, "The Serial Killer has won!") -- teamname
 		LANG.AddToLanguage("English", "info_popup_" .. SERIALKILLER.name, [[Now its your turn! Kill them ALL.]])
@@ -66,6 +66,7 @@ He can access his own ([C]) shop and is able to see every player through the wal
 
 		-- maybe this language as well...
 		LANG.AddToLanguage("Deutsch", SERIALKILLER.name, "Serienkiller")
+		LANG.AddToLanguage("Deutsch", TEAM_SERIALKILLER, "TEAM Serienkiller")
 		LANG.AddToLanguage("Deutsch", "hilite_win_" .. TEAM_SERIALKILLER, "THE SK WON")
 		LANG.AddToLanguage("Deutsch", "win_" .. TEAM_SERIALKILLER, "Der Serienkiller hat gewonnen!")
 		LANG.AddToLanguage("Deutsch", "info_popup_" .. SERIALKILLER.name, [[Jetzt bist du dran! Töte sie ALLE...]])
