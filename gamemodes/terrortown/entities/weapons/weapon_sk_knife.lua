@@ -46,6 +46,20 @@ SWEP.IsSilent = true
 -- Pull out faster than standard guns
 SWEP.DeploySpeed = 2
 
+if SERVER then
+	hook.Add("Initialize", "AddSKKnifeToDefaultLoadout", function()
+		local wep = weapons.GetStored("weapon_sk_knife")
+
+		if wep then
+			wep.InLoadoutFor = wep.InLoadoutFor or {}
+
+			if not table.HasValue(wep.InLoadoutFor, ROLE_SERIALKILLER) then
+				table.insert(wep.InLoadoutFor, ROLE_SERIALKILLER)
+			end
+		end
+	end)
+end
+
 function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 

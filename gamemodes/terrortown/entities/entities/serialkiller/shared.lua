@@ -84,11 +84,24 @@ if SERVER then
 	-- just some networking...
 	util.AddNetworkString("Newserialkillers")
 
-	-- is called if the role has been selected in the normal way of team setup
-	hook.Add("TTT2RoleTypeSet", "UpdateSerialRoleSelect", function(ply)
-		if ply:GetSubRole() == ROLE_SERIALKILLER then
-			ply:StripWeapon("weapon_zm_improvised")
-			ply:Give("weapon_sk_knife")
+	-- default loadout is used if the player spawns
+	hook.Add("TTT2ModifyDefaultLoadout", "ModifySKLoadout", function(loadout_weapons, subrole)
+		if subrole == ROLE_SERIALKILLER then
+			for k, v in ipairs(loadout_weapons[subrole]) do
+				if v == "weapon_zm_improvised" then
+					table.remove(loadout_weapons[subrole], k)
+
+					local tbl = weapons.GetStored("weapon_zm_improvised")
+
+					if tbl and tbl.InLoadoutFor then
+						for k2, sr in ipairs(tbl.InLoadoutFor) do
+							if sr == subrole then
+								table.remove(tbl.InLoadoutFor, k2)
+							end
+						end
+					end
+				end
+			end
 		end
 	end)
 
@@ -121,7 +134,7 @@ if SERVER then
 			for _, v in ipairs(player.GetAll()) do
 				if not IsValid(v) then return end
 
-				if v:GetRole() == SERIALKILLER.index and v:Alive() then
+				if v:GetSubRole() == ROLE_SERIALKILLER and v:Alive() then
 					v:PrintMessage(HUD_PRINTCENTER, "Your Evil is showing")
 
 					net.Start("Newserialkillers")
