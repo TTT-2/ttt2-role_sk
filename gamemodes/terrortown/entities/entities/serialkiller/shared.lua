@@ -1,24 +1,23 @@
 if SERVER then
 	AddCSLuaFile()
 
-	resource.AddFile("materials/vgui/ttt/icon_sk.vmt")
-	resource.AddFile("materials/vgui/ttt/sprite_sk.vmt")
+	resource.AddFile("materials/vgui/ttt/dynamic/roles/icon_sk.vmt")
 	resource.AddFile("materials/smokey.png")
 end
 
 -- creates global var "TEAM_SERIALKILLER" and other required things
 -- TEAM_[name], data: e.g. icon, color,...
 InitCustomTeam("SERIALKILLER", {
-		icon = "vgui/ttt/sprite_sk",
-		color = Color(85, 26, 139, 255)
+		icon = "vgui/ttt/dynamic/roles/icon_sk",
+		color = Color(49, 105, 109, 255)
 })
 
 -- important to add roles with this function,
 -- because it does more than just access the array ! e.g. updating other arrays
 InitCustomRole("SERIALKILLER", { -- first param is access for ROLES array => SERIALKILLER or ROLES["SERIALKILLER"]
-		color = Color(85, 26, 139, 255), -- ...
-		dkcolor = Color(47, 5, 86, 255), -- ...
-		bgcolor = Color(206, 197, 26, 255), -- ...
+		color = Color(49, 105, 109, 255), -- ...
+		dkcolor = Color(11, 60, 65, 255), -- ...
+		bgcolor = Color(179, 126, 79, 255), -- ...
 		abbr = "sk", -- abbreviation
 		defaultTeam = TEAM_SERIALKILLER, -- the team name: roles with same team name are working together
 		defaultEquipment = SPECIAL_EQUIPMENT, -- here you can set up your own default equipment
