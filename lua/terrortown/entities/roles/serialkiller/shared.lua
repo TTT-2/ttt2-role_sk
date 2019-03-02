@@ -7,32 +7,30 @@ end
 
 -- creates global var "TEAM_SERIALKILLER" and other required things
 -- TEAM_[name], data: e.g. icon, color,...
-InitCustomTeam("SERIALKILLER", {
+roles.InitCustomTeam(ROLE.name, {
 		icon = "vgui/ttt/dynamic/roles/icon_sk",
 		color = Color(49, 105, 109, 255)
 })
 
--- important to add roles with this function,
--- because it does more than just access the array ! e.g. updating other arrays
-InitCustomRole("SERIALKILLER", { -- first param is access for ROLES array => SERIALKILLER or ROLES["SERIALKILLER"]
-		color = Color(49, 105, 109, 255), -- ...
-		dkcolor = Color(11, 60, 65, 255), -- ...
-		bgcolor = Color(179, 126, 79, 255), -- ...
-		abbr = "sk", -- abbreviation
-		defaultTeam = TEAM_SERIALKILLER, -- the team name: roles with same team name are working together
-		defaultEquipment = SPECIAL_EQUIPMENT, -- here you can set up your own default equipment
-		surviveBonus = 1, -- bonus multiplier for every survive while another player was killed
-		scoreKillsMultiplier = 5, -- multiplier for kill of player of another team
-		scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
-	}, {
-		pct = 0.13, -- necessary: percentage of getting this role selected (per player)
-		maximum = 1, -- maximum amount of roles in a round
-		minPlayers = 8, -- minimum amount of players until this role is able to get selected
-		credits = 1, -- the starting credits of a specific role
-		togglable = true, -- option to toggle a role for a client if possible (F1 menu)
-		random = 20, -- randomness of getting this role selected in a round
-		shopFallback = SHOP_FALLBACK_TRAITOR
-})
+ROLE.color = Color(49, 105, 109, 255) -- ...
+ROLE.dkcolor = Color(11, 60, 65, 255) -- ...
+ROLE.bgcolor = Color(179, 126, 79, 255) -- ...
+ROLE.abbr = "sk" -- abbreviation
+ROLE.defaultTeam = TEAM_SERIALKILLER -- the team name: roles with same team name are working together
+ROLE.defaultEquipment = SPECIAL_EQUIPMENT -- here you can set up your own default equipment
+ROLE.surviveBonus = 1 -- bonus multiplier for every survive while another player was killed
+ROLE.scoreKillsMultiplier = 5 -- multiplier for kill of player of another team
+ROLE.scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
+
+ROLE.conVarData = {
+	pct = 0.13, -- necessary: percentage of getting this role selected (per player)
+	maximum = 1, -- maximum amount of roles in a round
+	minPlayers = 8, -- minimum amount of players until this role is able to get selected
+	credits = 1, -- the starting credits of a specific role
+	togglable = true, -- option to toggle a role for a client if possible (F1 menu)
+	random = 20, -- randomness of getting this role selected in a round
+	shopFallback = SHOP_FALLBACK_TRAITOR
+}
 
 -- if loading of lang file fns has finished
 hook.Add("TTT2FinishedLoading", "SerialInitT", function()
