@@ -160,34 +160,41 @@ if SERVER then
 end
 
 if CLIENT then
-	hook.Add("PreDrawHalos", "AddSerialkillerHalos", function()
+	local staff = {}
+	local jesty = {}
+	
+	hook.Add("TTT2UpdateSubrole", "AdjustSerialkillerMarks", function(ply, old, new)
 		if not SERIALKILLER then return end
 
 		local client = LocalPlayer()
+		if client ~= ply then return end
 
-		if client:GetSubRole() == ROLE_SERIALKILLER then
-			local staff = {}
-			local jesty = {}
-
+		if old == ROLE_SERIALKILLER then
+			marks.Remove(staff)
+			marks.Remove(jesty)
+			
+			staff = {}
+			jesty = {}
+		elseif new == ROLE_SERIALKILLER then
 			for _, v in ipairs(player.GetAll()) do
-				if v:IsActive() and v:GetSubRole() ~= ROLE_SERIALKILLER then
-					local b = false
+				if v:Alive() and v:IsTerror() and v:GetSubRole() ~= ROLE_SERIALKILLER then
+					local jes = false
 
 					-- check whether role exists
 					if JESTER then
-						b = v:GetSubRole() == ROLE_JESTER
+						jes = v:GetSubRole() == ROLE_JESTER
 					end
 
-					if v:Alive() and not b then
-						table.insert(staff, v)
-					elseif v:Alive() and b then
-						table.insert(jesty, v)
+					if jes then
+						jesty[#jesty + 1] = v
+					else
+						staff[#staff + 1] = v
 					end
 				end
 			end
 
-			halo.Add(staff, Color(0, 255, 0), 0, 0, 2, true, true)
-			halo.Add(jesty, Color(255, 85, 100), 0, 0, 2, true, true)
+			marks.Add(staff, Color(0, 255, 0))
+			marks.Add(jesty, Color(255, 85, 100))
 		end
 	end)
 
