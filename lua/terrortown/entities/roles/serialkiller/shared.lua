@@ -56,7 +56,7 @@ function ROLE:Initialize()
 		LANG.AddToLanguage("English", "info_popup_" .. self.name, [[Now its your turn! Kill them ALL.]])
 		LANG.AddToLanguage("English", "body_found_" .. self.abbr, "This was a Serial Killer...")
 		LANG.AddToLanguage("English", "search_role_" .. self.abbr, "This person was a Serial Killer!")
-		LANG.AddToLanguage("English", "ev_win_" .. self, "The deadly Serial Killer won the round!")
+		LANG.AddToLanguage("English", "ev_win_" .. self.defaultTeam, "The deadly Serial Killer won the round!")
 		LANG.AddToLanguage("English", "target_" .. self.name, "Serial Killer")
 		LANG.AddToLanguage("English", "ttt2_desc_" .. self.name, [[The Serialkiller needs to kill every player and must be the last survivor to win the game.
 He can access his own ([C]) shop and is able to see every player through the walls (as well as he is able to select the Jester from the other players).]])
