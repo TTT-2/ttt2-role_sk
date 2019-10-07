@@ -12,69 +12,71 @@ roles.InitCustomTeam(ROLE.name, {
 		color = Color(49, 105, 109, 255)
 })
 
-ROLE.color = Color(49, 105, 109, 255) -- ...
-ROLE.dkcolor = Color(11, 60, 65, 255) -- ...
-ROLE.bgcolor = Color(179, 126, 79, 255) -- ...
-ROLE.abbr = "sk" -- abbreviation
-ROLE.defaultTeam = TEAM_SERIALKILLER -- the team name: roles with same team name are working together
-ROLE.defaultEquipment = SPECIAL_EQUIPMENT -- here you can set up your own default equipment
-ROLE.surviveBonus = 1 -- bonus multiplier for every survive while another player was killed
-ROLE.scoreKillsMultiplier = 5 -- multiplier for kill of player of another team
-ROLE.scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
+function ROLE:PreInitialize()
+	self.color = Color(49, 105, 109, 255) -- ...
+	self.dkcolor = Color(11, 60, 65, 255) -- ...
+	self.bgcolor = Color(179, 126, 79, 255) -- ...
+	self.abbr = "sk" -- abbreviation
+	self.surviveBonus = 1 -- bonus multiplier for every survive while another player was killed
+	self.scoreKillsMultiplier = 5 -- multiplier for kill of player of another team
+	self.scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
+	
+	self.defaultTeam = TEAM_SERIALKILLER -- the team name: roles with same team name are working together
+	self.defaultEquipment = SPECIAL_EQUIPMENT -- here you can set up your own default equipment
 
-ROLE.conVarData = {
-	pct = 0.13, -- necessary: percentage of getting this role selected (per player)
-	maximum = 1, -- maximum amount of roles in a round
-	minPlayers = 8, -- minimum amount of players until this role is able to get selected
-	credits = 1, -- the starting credits of a specific role
-	togglable = true, -- option to toggle a role for a client if possible (F1 menu)
-	random = 20, -- randomness of getting this role selected in a round
-	shopFallback = SHOP_FALLBACK_TRAITOR
-}
+	self.conVarData = {
+		pct = 0.13, -- necessary: percentage of getting this role selected (per player)
+		maximum = 1, -- maximum amount of roles in a round
+		minPlayers = 8, -- minimum amount of players until this role is able to get selected
+		credits = 1, -- the starting credits of a specific role
+		togglable = true, -- option to toggle a role for a client if possible (F1 menu)
+		random = 20, -- randomness of getting this role selected in a round
+		shopFallback = SHOP_FALLBACK_TRAITOR
+	}
+end
 
--- if loading of lang file fns has finished
-hook.Add("TTT2FinishedLoading", "SerialInitT", function()
+function ROLE:Initialize()
 	if SERVER and JESTER then
 		-- add a easy role filtering to receive all jesters
 		-- but just do it, when the role was created, then update it with recommended function
 		-- theoretically this function is not necessary to call, but maybe there are some modifications
 		-- of other addons. So it's better to use this function
 		-- because it calls hooks and is doing some networking
-		SERIALKILLER.networkRoles = {JESTER}
+		self.networkRoles = {JESTER}
 	end
 
 	if CLIENT then -- just on client !
 
 		-- setup here is not necessary but if you want to access the role data, you need to start here
 		-- setup basic translation !
-		LANG.AddToLanguage("English", SERIALKILLER.name, "Serial Killer")
-		LANG.AddToLanguage("English", TEAM_SERIALKILLER, "TEAM Serial Killers")
-		LANG.AddToLanguage("English", "hilite_win_" .. TEAM_SERIALKILLER, "THE SK WON") -- name of base role of a team -> maybe access with GetTeamRoles(SERIALKILLER.team)[1].name
-		LANG.AddToLanguage("English", "win_" .. TEAM_SERIALKILLER, "The Serial Killer has won!") -- teamname
-		LANG.AddToLanguage("English", "info_popup_" .. SERIALKILLER.name, [[Now its your turn! Kill them ALL.]])
-		LANG.AddToLanguage("English", "body_found_" .. SERIALKILLER.abbr, "This was a Serial Killer...")
-		LANG.AddToLanguage("English", "search_role_" .. SERIALKILLER.abbr, "This person was a Serial Killer!")
-		LANG.AddToLanguage("English", "ev_win_" .. TEAM_SERIALKILLER, "The deadly Serial Killer won the round!")
-		LANG.AddToLanguage("English", "target_" .. SERIALKILLER.name, "Serial Killer")
-		LANG.AddToLanguage("English", "ttt2_desc_" .. SERIALKILLER.name, [[The Serialkiller needs to kill every player and must be the last survivor to win the game.
+		LANG.AddToLanguage("English", self.name, "Serial Killer")
+		LANG.AddToLanguage("English", self.defaultTeam, "TEAM Serial Killers")
+		LANG.AddToLanguage("English", "hilite_win_" .. self.defaultTeam, "THE SK WON") -- name of base role of a team
+		LANG.AddToLanguage("English", "win_" .. self.defaultTeam, "The Serial Killer has won!") -- teamname
+		LANG.AddToLanguage("English", "info_popup_" .. self.name, [[Now its your turn! Kill them ALL.]])
+		LANG.AddToLanguage("English", "body_found_" .. self.abbr, "This was a Serial Killer...")
+		LANG.AddToLanguage("English", "search_role_" .. self.abbr, "This person was a Serial Killer!")
+		LANG.AddToLanguage("English", "ev_win_" .. self, "The deadly Serial Killer won the round!")
+		LANG.AddToLanguage("English", "target_" .. self.name, "Serial Killer")
+		LANG.AddToLanguage("English", "ttt2_desc_" .. self.name, [[The Serialkiller needs to kill every player and must be the last survivor to win the game.
 He can access his own ([C]) shop and is able to see every player through the walls (as well as he is able to select the Jester from the other players).]])
 
 		---------------------------------
 
 		-- maybe this language as well...
-		LANG.AddToLanguage("Deutsch", SERIALKILLER.name, "Serienkiller")
-		LANG.AddToLanguage("Deutsch", TEAM_SERIALKILLER, "TEAM Serienkiller")
-		LANG.AddToLanguage("Deutsch", "hilite_win_" .. TEAM_SERIALKILLER, "THE SK WON")
-		LANG.AddToLanguage("Deutsch", "win_" .. TEAM_SERIALKILLER, "Der Serienkiller hat gewonnen!")
-		LANG.AddToLanguage("Deutsch", "info_popup_" .. SERIALKILLER.name, [[Jetzt bist du dran! Töte sie ALLE...]])
-		LANG.AddToLanguage("Deutsch", "body_found_" .. SERIALKILLER.abbr, "Er war ein Serienkiller...")
-		LANG.AddToLanguage("Deutsch", "search_role_" .. SERIALKILLER.abbr, "Diese Person war ein Serienkiller!")
-		LANG.AddToLanguage("Deutsch", "ev_win_" .. TEAM_SERIALKILLER, "Der tötliche Serienkiller hat die Runde gewonnen!")
-		LANG.AddToLanguage("Deutsch", "target_" .. SERIALKILLER.name, "Serienkiller")
-		LANG.AddToLanguage("Deutsch", "ttt2_desc_" .. SERIALKILLER.name, [[Der Serienkiller muss alle anderen Spieler töten und muss der letzte Überlebende (außer den Narren) sein, um zu gewinnen.
+		LANG.AddToLanguage("Deutsch", self.name, "Serienkiller")
+		LANG.AddToLanguage("Deutsch", self.defaultTeam, "TEAM Serienkiller")
+		LANG.AddToLanguage("Deutsch", "hilite_win_" .. self.defaultTeam, "THE SK WON")
+		LANG.AddToLanguage("Deutsch", "win_" .. self.defaultTeam, "Der Serienkiller hat gewonnen!")
+		LANG.AddToLanguage("Deutsch", "info_popup_" .. self.name, [[Jetzt bist du dran! Töte sie ALLE...]])
+		LANG.AddToLanguage("Deutsch", "body_found_" .. self.abbr, "Er war ein Serienkiller...")
+		LANG.AddToLanguage("Deutsch", "search_role_" .. self.abbr, "Diese Person war ein Serienkiller!")
+		LANG.AddToLanguage("Deutsch", "ev_win_" .. self.defaultTeam, "Der tötliche Serienkiller hat die Runde gewonnen!")
+		LANG.AddToLanguage("Deutsch", "target_" .. self.name, "Serienkiller")
+		LANG.AddToLanguage("Deutsch", "ttt2_desc_" .. self.name, [[Der Serienkiller muss alle anderen Spieler töten und muss der letzte Überlebende (außer den Narren) sein, um zu gewinnen.
 Er kann seinen eigenen ([C]) Shop nutzen und kann alle anderen Spieler durch Wände sehen (sowie speziell den Jester sehen).]])
 	end
-end)
+end
 
 if SERVER then
 
