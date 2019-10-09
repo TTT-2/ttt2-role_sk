@@ -45,14 +45,12 @@ function ROLE:Initialize()
 		self.networkRoles = {JESTER}
 	end
 
-	if CLIENT then -- just on client !
-
-		-- setup here is not necessary but if you want to access the role data, you need to start here
-		-- setup basic translation !
+	if CLIENT then
+		-- Role specific language elements
 		LANG.AddToLanguage("English", self.name, "Serial Killer")
 		LANG.AddToLanguage("English", self.defaultTeam, "TEAM Serial Killers")
-		LANG.AddToLanguage("English", "hilite_win_" .. self.defaultTeam, "THE SK WON") -- name of base role of a team
-		LANG.AddToLanguage("English", "win_" .. self.defaultTeam, "The Serial Killer has won!") -- teamname
+		LANG.AddToLanguage("English", "hilite_win_" .. self.defaultTeam, "THE SK WON")
+		LANG.AddToLanguage("English", "win_" .. self.defaultTeam, "The Serial Killer has won!")
 		LANG.AddToLanguage("English", "info_popup_" .. self.name, [[Now its your turn! Kill them ALL.]])
 		LANG.AddToLanguage("English", "body_found_" .. self.abbr, "This was a Serial Killer...")
 		LANG.AddToLanguage("English", "search_role_" .. self.abbr, "This person was a Serial Killer!")
@@ -61,9 +59,6 @@ function ROLE:Initialize()
 		LANG.AddToLanguage("English", "ttt2_desc_" .. self.name, [[The Serialkiller needs to kill every player and must be the last survivor to win the game.
 He can access his own ([C]) shop and is able to see every player through the walls (as well as he is able to select the Jester from the other players).]])
 
-		---------------------------------
-
-		-- maybe this language as well...
 		LANG.AddToLanguage("Deutsch", self.name, "Serienkiller")
 		LANG.AddToLanguage("Deutsch", self.defaultTeam, "TEAM Serienkiller")
 		LANG.AddToLanguage("Deutsch", "hilite_win_" .. self.defaultTeam, "THE SK WON")
@@ -79,11 +74,20 @@ Er kann seinen eigenen ([C]) Shop nutzen und kann alle anderen Spieler durch Wä
 end
 
 if SERVER then
+	-- Give Loadout on respawn and rolechange	
+	function ROLE:GiveRoleLoadout(ply, isRoleChange)
+		ply:GiveEquipmentItem('item_ttt_tracker')
+	end
+
+	-- Remove Loadout on death and rolechange
+	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
+		ply:RemoveEquipmentItem('item_ttt_tracker')
+	end
 
 	-- just some networking...
 	util.AddNetworkString("Newserialkillers")
 
-	-- default loadout is used if the player spawns
+	-- remove the crowbar in favor of something else
 	hook.Add("TTT2ModifyDefaultLoadout", "ModifySKLoadout", function(loadout_weapons, subrole)
 		if subrole == ROLE_SERIALKILLER then
 			for k, v in ipairs(loadout_weapons[subrole]) do
