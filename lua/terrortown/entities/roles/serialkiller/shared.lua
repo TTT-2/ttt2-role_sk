@@ -13,14 +13,13 @@ roles.InitCustomTeam(ROLE.name, {
 })
 
 function ROLE:PreInitialize()
-	self.color = Color(49, 105, 109, 255) -- ...
-	self.dkcolor = Color(11, 60, 65, 255) -- ...
-	self.bgcolor = Color(179, 126, 79, 255) -- ...
+	self.color = Color(49, 105, 109, 255)
+
 	self.abbr = "sk" -- abbreviation
 	self.surviveBonus = 1 -- bonus multiplier for every survive while another player was killed
 	self.scoreKillsMultiplier = 5 -- multiplier for kill of player of another team
 	self.scoreTeamKillsMultiplier = -16 -- multiplier for teamkill
-	
+
 	self.defaultTeam = TEAM_SERIALKILLER -- the team name: roles with same team name are working together
 	self.defaultEquipment = SPECIAL_EQUIPMENT -- here you can set up your own default equipment
 
@@ -84,7 +83,7 @@ if SERVER then
 
 	-- Remove Loadout on death and rolechange
 	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
-		ply:RemoveEquipmentItem('item_ttt_tracker')
+		ply:RemoveEquipmentItem("item_ttt_tracker")
 		ply:StripWeapon("weapon_sk_knife")
 	end
 
@@ -172,7 +171,7 @@ end
 if CLIENT then
 	local staff = {}
 	local jesty = {}
-	
+
 	hook.Add("TTT2UpdateSubrole", "AdjustSerialkillerMarks", function(ply, old, new)
 		if not SERIALKILLER then return end
 
@@ -182,7 +181,7 @@ if CLIENT then
 		if old == ROLE_SERIALKILLER then
 			marks.Remove(staff)
 			marks.Remove(jesty)
-			
+
 			staff = {}
 			jesty = {}
 		elseif new == ROLE_SERIALKILLER then
