@@ -75,41 +75,28 @@ Er kann seinen eigenen ([C]) Shop nutzen und kann alle anderen Spieler durch Wä
 end
 
 if SERVER then
-	-- Give Loadout on respawn and rolechange	
+	-- Give Loadout on respawn and rolechange
 	function ROLE:GiveRoleLoadout(ply, isRoleChange)
-		ply:GiveEquipmentItem("item_ttt_tracker")
+		-- remove normal player loadout
+		ply:StripWeapon("weapon_zm_improvised")
+
+		-- give role loadout
 		ply:GiveEquipmentWeapon("weapon_sk_knife")
+		ply:GiveEquipmentItem("item_ttt_tracker")
 	end
 
 	-- Remove Loadout on death and rolechange
 	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
-		ply:RemoveEquipmentItem("item_ttt_tracker")
+		-- give back normal player loadout
+		ply:GiveEquipmentWeapon("weapon_zm_improvised")
+
+		-- remove roleloadout
 		ply:StripWeapon("weapon_sk_knife")
+		ply:RemoveEquipmentItem("item_ttt_tracker")
 	end
 
 	-- just some networking...
 	util.AddNetworkString("Newserialkillers")
-
-	-- remove the crowbar in favor of something else
-	hook.Add("TTT2ModifyDefaultLoadout", "ModifySKLoadout", function(loadout_weapons, subrole)
-		if subrole == ROLE_SERIALKILLER then
-			for k, v in ipairs(loadout_weapons[subrole]) do
-				if v == "weapon_zm_improvised" then
-					table.remove(loadout_weapons[subrole], k)
-
-					local tbl = weapons.GetStored("weapon_zm_improvised")
-
-					if tbl and tbl.InLoadoutFor then
-						for k2, sr in ipairs(tbl.InLoadoutFor) do
-							if sr == subrole then
-								table.remove(tbl.InLoadoutFor, k2)
-							end
-						end
-					end
-				end
-			end
-		end
-	end)
 
 	hook.Add("PlayerDeath", "SerialDeath", function(victim, infl, attacker)
 		if IsValid(attacker) and attacker:IsPlayer() and attacker:GetSubRole() == ROLE_SERIALKILLER then
