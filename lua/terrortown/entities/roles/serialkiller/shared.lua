@@ -87,12 +87,12 @@ if SERVER then
 
 	-- Remove Loadout on death and rolechange
 	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
-		-- give back normal player loadout
-		ply:GiveEquipmentWeapon("weapon_zm_improvised")
-
 		-- remove roleloadout
 		ply:StripWeapon("weapon_sk_knife")
 		ply:RemoveEquipmentItem("item_ttt_tracker")
+
+		-- give back normal player loadout
+		ply:GiveEquipmentWeapon("weapon_zm_improvised")
 	end
 
 	-- just some networking...
