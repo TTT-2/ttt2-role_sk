@@ -42,35 +42,6 @@ function ROLE:Initialize()
 		-- because it calls hooks and is doing some networking
 		self.networkRoles = {JESTER}
 	end
-
-	if CLIENT then
-		-- Role specific language elements
-		LANG.AddToLanguage("English", self.name, "Serial Killer")
-		LANG.AddToLanguage("English", self.defaultTeam, "TEAM Serial Killers")
-		LANG.AddToLanguage("English", "hilite_win_" .. self.defaultTeam, "THE SK WON")
-		LANG.AddToLanguage("English", "win_" .. self.defaultTeam, "The Serial Killer has won!")
-		LANG.AddToLanguage("English", "info_popup_" .. self.name, [[Now it's your turn! Kill them all. Use your tracker to find your targets.
-		Right klicking with your knife throws an explosive grenade.]])
-		LANG.AddToLanguage("English", "body_found_" .. self.abbr, "They were a Serial Killer!")
-		LANG.AddToLanguage("English", "search_role_" .. self.abbr, "This person was a Serial Killer!")
-		LANG.AddToLanguage("English", "ev_win_" .. self.defaultTeam, "The deadly Serial Killer won the round!")
-		LANG.AddToLanguage("English", "target_" .. self.name, "Serial Killer")
-		LANG.AddToLanguage("English", "ttt2_desc_" .. self.name, [[The Serialkiller needs to kill every player and must be the last survivor to win the game.
-He can access his own ([C]) shop and is able to see every player through the walls (as well as he is able to select the jester from the other players).]])
-
-		LANG.AddToLanguage("Deutsch", self.name, "Serienkiller")
-		LANG.AddToLanguage("Deutsch", self.defaultTeam, "TEAM Serienkiller")
-		LANG.AddToLanguage("Deutsch", "hilite_win_" .. self.defaultTeam, "THE SK WON")
-		LANG.AddToLanguage("Deutsch", "win_" .. self.defaultTeam, "Der Serienkiller hat gewonnen!")
-		LANG.AddToLanguage("Deutsch", "info_popup_" .. self.name, [[Jetzt bist du dran! Töte alle. Nutze deinen Tracker um deine Ziele zu finden.
-		Rechts klick mit deinem Messer wirft eine explosive Granate.]])
-		LANG.AddToLanguage("Deutsch", "body_found_" .. self.abbr, "Er war ein Serienkiller...")
-		LANG.AddToLanguage("Deutsch", "search_role_" .. self.abbr, "Diese Person war ein Serienkiller!")
-		LANG.AddToLanguage("Deutsch", "ev_win_" .. self.defaultTeam, "Der tötliche Serienkiller hat die Runde gewonnen!")
-		LANG.AddToLanguage("Deutsch", "target_" .. self.name, "Serienkiller")
-		LANG.AddToLanguage("Deutsch", "ttt2_desc_" .. self.name, [[Der Serienkiller muss alle anderen Spieler töten und muss der letzte Überlebende (außer den Narren) sein, um zu gewinnen.
-Er kann seinen eigenen ([C]) Shop nutzen und kann alle anderen Spieler durch Wände sehen (sowie speziell den Jester sehen).]])
-	end
 end
 
 if SERVER then
@@ -85,9 +56,6 @@ if SERVER then
 		ply:StripWeapon("weapon_ttt_sk_knife")
 		ply:RemoveEquipmentItem("item_ttt_tracker")
 	end
-
-	-- just some networking...
-	util.AddNetworkString("Newserialkillers")
 
 	hook.Add("PlayerDeath", "SerialDeath", function(victim, infl, attacker)
 		if IsValid(attacker) and attacker:IsPlayer() and attacker:GetSubRole() == ROLE_SERIALKILLER then
