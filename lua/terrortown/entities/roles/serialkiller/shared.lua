@@ -2,7 +2,6 @@ if SERVER then
 	AddCSLuaFile()
 
 	resource.AddFile("materials/vgui/ttt/dynamic/roles/icon_sk.vmt")
-	resource.AddFile("materials/smokey.png")
 end
 
 -- creates global var "TEAM_SERIALKILLER" and other required things
@@ -77,22 +76,14 @@ end
 if SERVER then
 	-- Give Loadout on respawn and rolechange
 	function ROLE:GiveRoleLoadout(ply, isRoleChange)
-		-- remove normal player loadout
-		ply:StripWeapon("weapon_zm_improvised")
-
-		-- give role loadout
-		ply:GiveEquipmentWeapon("weapon_sk_knife")
+		ply:GiveEquipmentWeapon("weapon_ttt_sk_knife")
 		ply:GiveEquipmentItem("item_ttt_tracker")
 	end
 
 	-- Remove Loadout on death and rolechange
 	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
-		-- remove roleloadout
-		ply:StripWeapon("weapon_sk_knife")
+		ply:StripWeapon("weapon_ttt_sk_knife")
 		ply:RemoveEquipmentItem("item_ttt_tracker")
-
-		-- give back normal player loadout
-		ply:GiveEquipmentWeapon("weapon_zm_improvised")
 	end
 
 	-- just some networking...
@@ -115,42 +106,6 @@ if SERVER then
 		and dmginfo:IsBulletDamage() and dmginfo:GetAttacker():GetSubRole() == ROLE_SERIALKILLER
 		then
 			dmginfo:ScaleDamage(1.25)
-		end
-	end)
-
-	-- following code by Jenssons
-	function thatsksmoke()
-		timer.Remove("sksmoke")
-		timer.Create("sksmoke", 0.1, 0, function()
-			timer.Remove("thatsksmokecheckers")
-
-			for _, v in ipairs(player.GetAll()) do
-				if not IsValid(v) then return end
-
-				if v:GetSubRole() == ROLE_SERIALKILLER and v:Alive() then
-					v:PrintMessage(HUD_PRINTCENTER, "Your Evil is showing")
-
-					net.Start("Newserialkillers")
-					net.WriteEntity(v)
-					net.Broadcast()
-				else
-					timer.Remove("thatsksmokecheckers")
-					timer.Remove("sksmoke")
-				end
-			end
-		end)
-	end
-
-	function thatsksmokechecker()
-		timer.Create("sksmokechecker", 75, 0, thatsksmoke)
-	end
-
-	timer.Create("roundcheckers", 0.1, 0, function()
-		if GetRoundState() == ROUND_ACTIVE then
-			timer.Create("thatsksmokecheckers", 1, 1, thatsksmokechecker)
-		else
-			timer.Remove("thatsksmokecheckers")
-			timer.Remove("sksmoke")
 		end
 	end)
 end
@@ -191,35 +146,6 @@ if CLIENT then
 
 			marks.Add(staff, Color(0, 255, 0))
 			marks.Add(jesty, Color(255, 85, 100))
-		end
-	end)
-
-	local serialkillers = Material("smokey.png")
-
-	net.Receive("Newserialkillers", function()
-		local ent = net.ReadEntity()
-
-		local pos = ent:GetPos() + Vector(0, 0, 50)
-
-		local velFax = 50
-		local gravMax = 5
-
-		local gravity = Vector(math.random(-gravMax, gravMax), math.random(-gravMax, gravMax), math.random(-gravMax, 0))
-
-		--Handles particles
-		local emitter = ParticleEmitter(pos, true)
-
-		for I = 1, 150 do
-			local p = emitter:Add(serialkillers, pos)
-			p:SetStartSize(math.random(6, 10))
-			p:SetEndSize(0)
-			p:SetAngles(Angle(math.random(0, 360), math.random(0, 360), math.random(0, 360)))
-			p:SetAngleVelocity(Angle(math.random(5, 50), math.random(5, 50), math.random(5, 50)))
-			p:SetVelocity(Vector(math.random(-velFax, velFax), math.random(-velFax, velFax), math.random(-velFax, velFax)))
-			p:SetColor(0, 0, 0)
-			p:SetDieTime(0.5)
-			p:SetGravity(gravity)
-			p:SetAirResistance(125)
 		end
 	end)
 end

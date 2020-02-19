@@ -4,7 +4,6 @@ SWEP.HoldType = "knife"
 
 if CLIENT then
 	SWEP.PrintName = "knife_name"
-	SWEP.Slot = 0
 
 	SWEP.ViewModelFlip = false
 	SWEP.ViewModelFOV = 54
@@ -26,11 +25,13 @@ SWEP.ViewModel = "models/weapons/cstrike/c_knife_t.mdl"
 SWEP.WorldModel = "models/weapons/w_knife_t.mdl"
 
 SWEP.Primary.Damage = 40
-SWEP.Primary.ClipSize = -1
-SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Automatic = true
 SWEP.Primary.Delay = 1
-SWEP.Primary.Ammo = "none"
+
+SWEP.Primary.Ammo = ''
+SWEP.Primary.ClipSize = 1
+SWEP.Primary.ClipMax = 1
+SWEP.Primary.DefaultClip = 1
 
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
@@ -38,13 +39,18 @@ SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
 SWEP.Secondary.Delay = 12
 
-SWEP.Kind = WEAPON_MELEE
-SWEP.WeaponID = AMMO_CROWBAR
+SWEP.Kind = WEAPON_SPECIAL
 
 SWEP.IsSilent = true
 
 -- Pull out faster than standard guns
 SWEP.DeploySpeed = 2
+
+local function RefillKnife(swep)
+	if not swep or not IsValid(swep) then return end
+
+	swep:SetClip1(1)
+end
 
 function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
@@ -197,27 +203,33 @@ function SWEP:StabKill(tr, spos, sdest)
 	-- the ragdoll in here...
 end
 
-function SWEP:SecondaryAttack()
+function SWEP:SecondaryAttack(worldsnd)
 	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
+
+	timer.Create("ttt2_sk_refill_knife_" .. tostring(self:EntIndex()), self.Secondary.Delay, 1, function()
+		RefillKnife(self)
+	end)
+
+	self:SetClip1(0)
+
+	STATUS:AddTimedStatus(self.Owner, "ttt2_sk_refill_knife", self.Secondary.Delay, true)
 
 	if not IsFirstTimePredicted() then return end
 
 	if self.Owner:KeyDown(IN_SPEED) then return end
 
-	self:SetNextPrimaryFire(CurTime() + 1)
-
 	if CLIENT then return end
 
-	local Bom = ents.Create("tot_smokenade")
+	local bom = ents.Create("ttt2_shake_nade")
 
-	if Bom then
-		Bom.HmcdSpawned = self.HmcdSpawned
-		Bom:SetPos(self.Owner:GetShootPos() + self.Owner:GetAimVector() * 20)
+	if bom then
+		bom.HmcdSpawned = self.HmcdSpawned
+		bom:SetPos(self.Owner:GetShootPos() + self.Owner:GetAimVector() * 20)
 
-		Bom:Spawn()
-		Bom:Activate()
+		bom:Spawn()
+		bom:Activate()
 
-		Bom:GetPhysicsObject():SetVelocity(self.Owner:GetVelocity() + self.Owner:GetAimVector() * 300)
+		bom:GetPhysicsObject():SetVelocity(self.Owner:GetVelocity() + self.Owner:GetAimVector() * 300)
 	end
 
 	sound.Play("snd_jack_hmcd_match.wav", self:GetPos(), 65, math.random(90, 110))
@@ -226,4 +238,12 @@ end
 
 function SWEP:OnDrop()
 	self:Remove()
+end
+
+if CLIENT then
+	function SWEP:Initialize()
+		self:AddHUDHelp("ttt2_role_sk_knife_primary", "ttt2_role_sk_knife_secondary", true)
+
+		return self.BaseClass.Initialize(self)
+	end
 end
