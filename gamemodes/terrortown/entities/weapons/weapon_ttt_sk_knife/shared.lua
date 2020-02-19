@@ -46,12 +46,6 @@ SWEP.IsSilent = true
 -- Pull out faster than standard guns
 SWEP.DeploySpeed = 2
 
-local function RefillKnife(swep)
-	if not swep or not IsValid(swep) then return end
-
-	swep:SetClip1(1)
-end
-
 function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 
@@ -206,8 +200,12 @@ end
 function SWEP:SecondaryAttack(worldsnd)
 	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
 
+	local swep = self
+
 	timer.Create("ttt2_sk_refill_knife_" .. tostring(self:EntIndex()), self.Secondary.Delay, 1, function()
-		RefillKnife(self)
+		if not IsValid(swep) then return end
+
+		swep:SetClip1(1)
 	end)
 
 	self:SetClip1(0)
