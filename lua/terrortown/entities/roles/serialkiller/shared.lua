@@ -49,12 +49,14 @@ if SERVER then
 	function ROLE:GiveRoleLoadout(ply, isRoleChange)
 		ply:GiveEquipmentWeapon("weapon_ttt_sk_knife")
 		ply:GiveEquipmentItem("item_ttt_tracker")
+		ply:GiveArmor(60)
 	end
 
 	-- Remove Loadout on death and rolechange
 	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
 		ply:StripWeapon("weapon_ttt_sk_knife")
 		ply:RemoveEquipmentItem("item_ttt_tracker")
+		ply:RemoveArmor(60)
 	end
 
 	hook.Add("PlayerDeath", "SerialDeath", function(victim, infl, attacker)
@@ -65,17 +67,6 @@ if SERVER then
 		end
 	end)
 
-	hook.Add("ScalePlayerDamage", "SerialScaleDmg", function(ply, hitgroup, dmginfo)
-		if ply:GetSubRole() == ROLE_SERIALKILLER then
-			dmginfo:ScaleDamage(0.5)
-		end
-
-		if ply:IsPlayer() and dmginfo:GetAttacker():IsPlayer()
-		and dmginfo:IsBulletDamage() and dmginfo:GetAttacker():GetSubRole() == ROLE_SERIALKILLER
-		then
-			dmginfo:ScaleDamage(1.25)
-		end
-	end)
 end
 
 if CLIENT then
