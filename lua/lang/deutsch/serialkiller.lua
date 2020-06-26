@@ -15,5 +15,5 @@ L["ttt2_desc_" .. SERIALKILLER.name] = [[Der Serienmörder muss alle anderen Spi
 Er kann seinen eigenen ([C]) Shop nutzen und kann alle anderen Spieler durch Wände sehen (sowie speziell den Jester sehen).]]
 
 -- OTHER ROLE LANGUAGE STRINGS
-L["ttt2_role_sk_knife_primary"] = "{primaryfire} greift einen fokussierten Spieler an"
-L["ttt2_role_sk_knife_secondary"] = "{secondaryfire} wirft eine Schüttelgranate"
+L["ttt2_role_sk_knife_primary"] = "Greife den fokussierten Spieler an"
+L["ttt2_role_sk_knife_secondary"] = "Werfe eine Schüttelgranate"

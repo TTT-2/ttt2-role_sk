@@ -240,7 +240,7 @@ end
 
 if CLIENT then
 	function SWEP:Initialize()
-		self:AddHUDHelp("ttt2_role_sk_knife_primary", "ttt2_role_sk_knife_secondary", true)
+		self:AddTTT2HUDHelp("ttt2_role_sk_knife_primary", "ttt2_role_sk_knife_secondary", true)
 
 		return self.BaseClass.Initialize(self)
 	end

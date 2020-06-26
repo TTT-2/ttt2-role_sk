@@ -15,5 +15,5 @@ L["ttt2_desc_" .. SERIALKILLER.name] = [[The Serialkiller needs to kill every pl
 He can access his own ([C]) shop and is able to see every player through the walls (as well as he is able to select the jester from the other players).]]
 
 -- OTHER ROLE LANGUAGE STRINGS
-L["ttt2_role_sk_knife_primary"] = "{primaryfire} attacks a focused player"
-L["ttt2_role_sk_knife_secondary"] = "{secondaryfire} throws a shake nade"
+L["ttt2_role_sk_knife_primary"] = "Attack a focused player"
+L["ttt2_role_sk_knife_secondary"] = "Throw a shake nade"
