@@ -1,8 +1,8 @@
-L = LANG.GetLanguageTableReference("italiano")
+local L = LANG.GetLanguageTableReference("italiano")
 
 -- GENERAL ROLE LANGUAGE STRINGS
 L[SERIALKILLER.name] = "Serial Killer"
-L[SERIALKILLER.defaultTeam] = "TEAM Serial Killers"
+L[SERIALKILLER.defaultTeam] = "Team Serial Killers"
 L["hilite_win_" .. SERIALKILLER.defaultTeam] = "I SERIAL KILLER HANNO VINTO"
 L["win_" .. SERIALKILLER.defaultTeam] = "Il Serial Killer ha vinto!"
 L["info_popup_" .. SERIALKILLER.name] = [[Ora è il turno! Uccidi tutti. Usa il tuo tracker per trovare i tuoi bersagli.
