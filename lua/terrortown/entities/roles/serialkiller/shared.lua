@@ -45,18 +45,30 @@ function ROLE:Initialize()
 end
 
 if SERVER then
+	--CONSTANTS
+	-- Enum for tracker mode
+	local TRACKER_MODE = {NONE = 0, RADAR = 1, TRACKER = 2}
+
 	-- Give Loadout on respawn and rolechange
 	function ROLE:GiveRoleLoadout(ply, isRoleChange)
 		ply:GiveEquipmentWeapon("weapon_ttt_sk_knife")
-		ply:GiveEquipmentItem("item_ttt_tracker")
-		ply:GiveArmor(60)
+		if GetConVar("ttt2_serialkiller_tracker_mode"):GetInt() == TRACKER_MODE.RADAR then
+			ply:GiveEquipmentItem("item_ttt_radar")
+		elseif GetConVar("ttt2_serialkiller_tracker_mode"):GetInt() == TRACKER_MODE.TRACKER then
+			ply:GiveEquipmentItem("item_ttt_tracker")
+		end
+		ply:GiveArmor(GetConVar("ttt2_serialkiller_armor"):GetInt())
 	end
 
 	-- Remove Loadout on death and rolechange
 	function ROLE:RemoveRoleLoadout(ply, isRoleChange)
 		ply:StripWeapon("weapon_ttt_sk_knife")
-		ply:RemoveEquipmentItem("item_ttt_tracker")
-		ply:RemoveArmor(60)
+		if GetConVar("ttt2_serialkiller_tracker_mode"):GetInt() == TRACKER_MODE.RADAR then
+			ply:RemoveEquipmentItem("item_ttt_radar")
+		elseif GetConVar("ttt2_serialkiller_tracker_mode"):GetInt() == TRACKER_MODE.TRACKER then
+			ply:RemoveEquipmentItem("item_ttt_tracker")
+		end
+		ply:RemoveArmor(GetConVar("ttt2_serialkiller_armor"):GetInt())
 	end
 
 	hook.Add("PlayerDeath", "SerialDeath", function(victim, infl, attacker)
@@ -64,47 +76,6 @@ if SERVER then
 			timer.Stop("sksmokechecker")
 			timer.Start("sksmokechecker")
 			timer.Remove("sksmoke")
-		end
-	end)
-
-end
-
-if CLIENT then
-	local staff = {}
-	local jesty = {}
-
-	hook.Add("TTT2UpdateSubrole", "AdjustSerialkillerMarks", function(ply, old, new)
-		if not SERIALKILLER then return end
-
-		local client = LocalPlayer()
-		if client ~= ply then return end
-
-		if old == ROLE_SERIALKILLER then
-			marks.Remove(staff)
-			marks.Remove(jesty)
-
-			staff = {}
-			jesty = {}
-		elseif new == ROLE_SERIALKILLER then
-			for _, v in ipairs(player.GetAll()) do
-				if v:Alive() and v:IsTerror() and v:GetSubRole() ~= ROLE_SERIALKILLER then
-					local jes = false
-
-					-- check whether role exists
-					if JESTER then
-						jes = v:GetSubRole() == ROLE_JESTER
-					end
-
-					if jes then
-						jesty[#jesty + 1] = v
-					else
-						staff[#staff + 1] = v
-					end
-				end
-			end
-
-			marks.Add(staff, Color(0, 255, 0))
-			marks.Add(jesty, Color(255, 85, 100))
 		end
 	end)
 end
