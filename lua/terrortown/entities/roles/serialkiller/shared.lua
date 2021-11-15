@@ -22,6 +22,8 @@ function ROLE:PreInitialize()
 	self.defaultTeam = TEAM_SERIALKILLER
 	self.defaultEquipment = SPECIAL_EQUIPMENT
 
+	self.isOmniscientRole = true
+
 	self.conVarData = {
 		pct = 0.13,
 		maximum = 1,
