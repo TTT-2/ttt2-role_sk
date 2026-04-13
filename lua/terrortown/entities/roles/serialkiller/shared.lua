@@ -83,3 +83,40 @@ if SERVER then
 		end
 	end)
 end
+
+if CLIENT then
+	function ROLE:AddToSettingsMenu(parent)
+		local form = vgui.CreateTTT2Form(parent, "header_roles_additional")
+
+		form:MakeSlider({
+			serverConvar = "ttt2_serialkiller_armor",
+			label = "label_serialkiller_armor",
+			min = 0,
+			max = 120,
+			decimal = 0
+		})
+
+		form:MakeHelp({
+			label = "help_serialkiller_tracker_mode"
+		})
+
+		form:MakeComboBox({
+			serverConvar = "ttt2_serialkiller_tracker_mode",
+			label = "label_serialkiller_tracker_mode",
+			choices = {
+				{
+					title = LANG.TryTranslation("label_serialkiller_tracker_mode_0"),
+					value = 0,
+				},
+				{
+					title = LANG.TryTranslation("label_serialkiller_tracker_mode_1"),
+					value = 1,
+				},
+				{
+					title = LANG.TryTranslation("label_serialkiller_tracker_mode_2"),
+					value = 2,
+				},
+			},
+		})
+	end
+end
