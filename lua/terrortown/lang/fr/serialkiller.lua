@@ -17,3 +17,15 @@ Il peut accéder à son propre ([C]) shop et est capable de voir chaque joueur �
 -- OTHER ROLE LANGUAGE STRINGS
 L["ttt2_role_sk_knife_primary"] = "Attaquer le joueur ciblé"
 L["ttt2_role_sk_knife_secondary"] = "Lance une grenade"
+
+--L["label_serialkiller_armor"] = "How much armor should the Serial Killer start with?"
+--L["help_serialkiller_tracker_mode"] = [[
+--What type of tracking item should the Serial Killer start with?
+
+--Mode 0: The Serial Killer does not spawn with a tracking device. 
+--Mode 1: The Serial Killer spawns with a radar, which reveals player positions every 30 seconds. 
+--Mode 2: The Serial Killer spawns with a tracker, which reveals player positions constantly.]]
+--L["label_serialkiller_tracker_mode"] = "Which mode should be active?"
+--L["label_serialkiller_tracker_mode_0"] = "Mode 0"
+--L["label_serialkiller_tracker_mode_1"] = "Mode 1"
+--L["label_serialkiller_tracker_mode_2"] = "Mode 2"
